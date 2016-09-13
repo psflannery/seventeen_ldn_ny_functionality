@@ -1,0 +1,57 @@
+/**
+ * Link Picker Meta Box 
+ */
+
+.seventeen-ldn-ny-link-picker {
+	box-sizing: border-box;
+}
+.seventeen-ldn-ny-link-picker div {
+	float: left;
+	text-align: center;
+	width: 100%;
+	position: relative;
+	box-sizing: border-box;
+	padding: 5px;
+}
+.seventeen-ldn-ny-link-picker label {
+	/*font-size: 90%;
+	color: #aaa;*/
+}
+.seventeen-ldn-ny-link-picker .button {
+	width: 50px;
+	text-align: center;
+	margin-top: 2px;
+}
+.seventeen-ldn-ny-link-picker .label-title, .seventeen-ldn-ny-link-picker .seventeen-ldn-ny-text {
+	width: 35%;
+	text-align: left;
+}
+.seventeen-ldn-ny-link-picker .label-url, .seventeen-ldn-ny-link-picker .seventeen-ldn-ny-url {
+	width: 30%;
+	text-align: left;
+}
+.seventeen-ldn-ny-link-picker .label-blank, .seventeen-ldn-ny-link-picker .seventeen-ldn-ny-blank {
+	width: 25%;
+	text-align: left;
+}
+.seventeen-ldn-ny-link-picker .label-choose, .seventeen-ldn-ny-link-picker .choose {
+	width: 10%;
+	text-align: left;
+}
+.seventeen-ldn-ny-link-picker div label {
+	display: block;
+}
+
+.seventeen-ldn-ny-link-picker input[type=text],
+.seventeen-ldn-ny-link-picker input[type=url],
+.seventeen-ldn-ny-link-picker select {
+	width: 100% !important;
+}
+
+.seventeen-ldn-ny-link-picker select {
+	height: 32px !important;
+	font-size:14px !important;
+	margin-top: 1px !important;
+}
+
+// Repeat button
