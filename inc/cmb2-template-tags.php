@@ -246,7 +246,6 @@ function seventeen_ldn_ny_artist_exhibition_info( $before = '', $after = '', $wr
 
 // Helper Functions
 //---------------------------------------------------------------------
-
 /**
  * Apply oembed filters and shortcodes to the wysiwyg content
  *
@@ -265,22 +264,77 @@ function seventeen_ldn_ny_get_wysiwyg_output( $meta_key, $post_id = 0 ) {
 
     /**
      * Adds markup to images and videos for display in the fullscreen flickity carousel on artist post-type.
-     * Note - markup for images with captions is handled in `seventeen_ldn_ny_img_caption_shortcode_filter`.
      *
      * @return string
      */
+    // http://micahjon.com/removing-wrapping-p-tags-around-images-in-wordpress/
     if ( 'artists' === get_post_type() ) {
         $placeholder = 'data:image/gif;base64,R0lGODdhAQABAPAAAP///wAAACwAAAAAAQABAEACAkQBADs=';
-        //$placeholder = 'about:blank';
 
-        $content = preg_replace( 
-            '/<p>\\s*?(<a rel=\"attachment.*?><img.*?><\\/a>|<img.*?>)?\\s*<\\/p>/s', 
-            '<div class="flickity-carousel-cell"><div class="maintain-aspect-wrap"><figure class="maintain-aspect-media wp-captionless ' . seventeen_image_orientation() . '">$1</figure></div></div>', 
-            $content
-        );
+        // 1
+        // Needs second str_replace for placeholder that breaks iframes (see below)
+        /*
+        $pattern = '/<p>\\s*?(<a rel=\"attachment.*?><img.*?><\\/a>|<img.*?>)?\\s*<\\/p>/s';
+        $replacement = '<div class="flickity-carousel-cell"><div class="maintain-aspect-wrap"><figure class="maintain-aspect-media wp-captionless">$1</figure></div></div>';
+        */
+
+        // 2
+        // Incoroprates `data-flickity-lazyload` only works on captionless images
+        $pattern = '/<img([^>]+?)src=[\'"]?([^\'"\s>]+)[\'"]?([^>]*)>/';
+        //$replacement = sprintf( '<div class="flickity-carousel-cell"><div class="maintain-aspect-wrap"><figure class="maintain-aspect-media wp-captionless"><img${1}src="%s" data-flickity-lazyload="${2}"${3}></figure></div></div>', $placeholder );
+        //$replacement = sprintf( '<img${1}src="%s" data-flickity-lazyload="${2}"${3}>', $placeholder );
+
+        //3
+        /*
+        $pattern = '/<p>\\s*?(<a rel=\"attachment.*?><img([^>]+?)src=[\'"]?([^\'"\s>]+)[\'"]?([^>]*)><\\/a>|<img([^>]+?)src=[\'"]?([^\'"\s>]+)[\'"]?([^>]*)>)?\\s*<\\/p>/s';
+        $replacement = '';
+        */
+
+        //4
+        // Images without captions
+        $img_pattern = '/<p>\\s*?(<a rel=\"attachment.*?><img([^>]+?)src=[\'"]?([^\'"\s>]+)[\'"]?([^>]*)><\\/a>|<img([^>]+?)src=[\'"]?([^\'"\s>]+)[\'"]?([^>]*)>)?\\s*<\\/p>/s';
+        /*
+        $pattern = '/(<a rel=\"attachment.*?><img([^>]+?)src=[\'"]?([^\'"\s>]+)[\'"]?([^>]*)><\\/a>|<img([^>]+?)src=[\'"]?([^\'"\s>]+)[\'"]?([^>]*)>)/s';
+        */
+        
+        $img_replacement = sprintf( '<div class="flickity-carousel-cell"><div class="maintain-aspect-wrap"><div class="maintain-aspect-media wp-captionless"><img${5}src="%s" data-flickity-lazyload="${6}"${7}></div></div></div>', $placeholder );
+
+        //$iframe_pattern = '/<p>\s*?(<iframe\s+.*?<\/iframe>)?\s*<\/p>/si';
+        //$iframe_replacement = '<div class="flickity-carousel-cell"><div class="maintain-aspect-wrap"><div class="maintain-aspect-media wp-captionless">${1}</div></div></div>';
+
+        /*
+        $iframe_pattern = '/(<div[^>]*>)\s*?(<figure[^>]*>)\s*?(<iframe\s+.*?<\/iframe>)?\s*(<\/figure>)\s*?(<\/div>)/s';
+        */
+        /*
+        $iframe_pattern = '/(<div[^>]*>)\s*?(<figure class=[\'"]?([^\'"\s>]+)[\'"]?[^>]*>)\s*?(<iframe\s+.*?<\/iframe>)?\s*(<\/figure>)\s*?(<\/div>)/s';
+        */
+        /*
+        $iframe_pattern = '/(<div[^>]*>)\s*?<figure class=[\'"]?([^\'"\s>]+)[\'"]?[^>]*>\s*?(<iframe\s+.*?<\/iframe>)?\s*(<\/figure>)\s*?(<\/div>)/s';
+        */
+        /*
+        $iframe_pattern = '/(<div[^>]*>)\s*?(<figure class=[\'"])?([^\'"\s>]+)([\'"]?[^>]*>)\s*?(<iframe\s+.*?<\/iframe>)?\s*(<\/figure>)\s*?(<\/div>)/s';
+        */
+
+        // Iframes
+        /*
+        $iframe_pattern = '/(<div[^>]*>?\s*<figure class=[\'"])?([\'"])([\'"]?[^>]*>)\s*?(<iframe\s+.*?<\/iframe>)?\s*(<\/figure>\s*?<\/div>)/s';
+        */
+        $iframe_pattern = '/(<div[^>]*>?\s*<figure class=)[\'"]?([^\'"\s>]+)[\'"]?(.*?<\/div>)/s';
+        $iframe_replacement = '<div class="flickity-carousel-cell">${1}"${2} flickity-video-screen"${3}</div>';
+        //$iframe_replacement = '<div class="flickity-carousel-cell">${1}${2}${3}</div>';
+        //$iframe_replacement = '<div class="flickity-carousel-cell">${1}${2} flickity-video-screen${3}${4}${5}</div>';
+
+        // Images with captions
+        $caption_pattern = '/(<figure[^>]+? class=)[\'"]?([^\'"\*s]+)[\'"]?([\'"]?[^>]*>)\s*?(<a rel=\"attachment.*?><img([^>]+?)src=[\'"]?([^\'"\s>]+)[\'"]?([^>]*)><\/a>|<img([^>]+?)src=[\'"]?([^\'"\s>]+)[\'"]?([^>]*)>)(.*?<\/figure>)/si';
+        $caption_replacement = sprintf( '<div class="flickity-carousel-cell"><div class="maintain-aspect-wrap">${1}"${2} maintain-aspect-media"${3}<img ${8} src="%s" data-flickity-lazyload="${9}"${10}>${11}</div></div>', $placeholder );
+
+        $patterns = array( $img_pattern, $caption_pattern, $iframe_pattern );
+        $replacements = array( $img_replacement, $caption_replacement, $iframe_replacement );
+
+        $content = preg_replace( $patterns, $replacements, $content );
 
         // Lazyload flickity images
-        $content = str_replace('src="', 'src="' . $placeholder . '" data-flickity-lazyload="', $content);
+        //$content = str_replace('src="', 'src="' . $placeholder . '" data-flickity-lazyload="', $content);
     }
     
     return $content;
