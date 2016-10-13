@@ -20,7 +20,7 @@ function seventeen_ldn_ny_exhibition_dates() {
     if ( '' != $start_date ):
         //convert to pretty formats 
         $clean_start_date = date("jS F", $start_date);
-        $clean_end_date = date("jS F Y", $end_date);
+        $clean_end_date = date("jS F, Y", $end_date);
         
         //output the date
         $exhibition_date = '';
@@ -55,37 +55,68 @@ function seventeen_ldn_ny_do_exhibition_dates( $before = '', $after = '', $echo 
  *
  * @since Seventeen 1.0.0
  */
-function seventeen_ldn_ny_pv_dates() {
+function seventeen_ldn_ny_event_dates() {
 	global $post;
-	$pv_date = get_post_meta($post->ID, '_seventeen_private_view', true);
+    if ( 'exhibitions' === get_post_type() ) :
+    	$event_date = get_post_meta($post->ID, '_seventeen_private_view', true);
 
-	if ( '' != $pv_date ):
-        if ( $pv_date <= time() && !is_single() )
-            return;
+    	if ( '' != $event_date ):
+            if ( $event_date <= time() && !is_single() )
+                return;
 
-		$clean_pv_date = date("l jS F, ga", $pv_date);
+    		$clean_event_date = date("l jS F, ga", $event_date);
 
-		return esc_html( $clean_pv_date );
-	endif;
+    		return esc_html( $clean_event_date );
+    	endif;
+    endif;
+
+    if ( 'post' === get_post_type() ) :
+        $event_date = get_post_meta($post->ID, '_seventeen_event_date', true);
+        $event_start_time = get_post_meta($post->ID, '_seventeen_event_start_time', true);
+        $event_end_time = get_post_meta($post->ID, '_seventeen_event_end_time', true);
+
+        if ( '' != $event_date ):
+            $clean_event_date = date("l jS F", $event_date);
+
+            $event = '';
+            $event .= $clean_event_date;
+
+            if ( '' === $event_end_time ):
+                $event .= esc_html( ' at ', 'seventeen-ldn-ny' );
+            else:
+                $event .= esc_html( ', ', 'seventeen-ldn-ny' );
+            endif;
+
+            $event .=  $event_start_time;
+
+            if ( '' !== $event_end_time ):
+                $event .= esc_html( ' - ', 'seventeen-ldn-ny' );
+            endif;
+            
+            $event .= $event_end_time;
+
+            return esc_html( $event );
+        endif;
+    endif;
 }
 
 /**
- * Display or retrieve the private view date with optional markup.
+ * Display or retrieve the event date with optional markup.
  *
  * @since Seventeen 1.0.0
  */
 function seventeen_ldn_ny_do_pv_dates( $before = '', $after = '', $echo = true ) {
-	$pv_date = seventeen_ldn_ny_pv_dates();
+	$event_date = seventeen_ldn_ny_event_dates();
 
-	if ( strlen($pv_date) == 0 )
+	if ( strlen($event_date) == 0 )
         return;
 
-    $pv_date = $before . $pv_date . $after;
+    $event_date = $before . $event_date . $after;
 
     if ( $echo )
-        echo $pv_date;
+        echo $event_date;
     else
-        return $pv_date;
+        return $event_date;
 }
 
 /**
@@ -179,6 +210,37 @@ function seventeen_ldn_ny_do_artist_info( $before = '', $after = '', $wrap = fal
     }
 
     echo $output;
+}
+
+/**
+ * Returns HTML for the Curator Details added in the post meta.
+ * 
+ * @since Seventeen 1.0.0
+ */
+function seventeen_ldn_ny_curator_details() {
+    global $post;
+    $curator = get_post_meta($post->ID, '_seventeen_curated_by', true);
+
+    if ( '' === $curator )
+        return;
+
+    return $curator;
+}
+
+/**
+ * Echos HTML for the Curator Details added in the post meta.
+ * 
+ * @since Seventeen 1.0.0
+ */
+function seventeen_ldn_ny_do_curator_details( $before = '', $after = '' ) {
+    $curator = seventeen_ldn_ny_curator_details();
+
+    if ( '' === $curator )
+        return;
+
+    $curator = $before . $curator . $after;
+
+    echo $curator;
 }
 
 /**
@@ -280,6 +342,7 @@ function seventeen_ldn_ny_get_wysiwyg_output( $meta_key, $post_id = 0 ) {
         $iframe_replacement = '<div class="flickity-carousel-cell">${1}"${2} flickity-video-screen"${3}</div>';
 
         // Images with captions
+        // May need to allow for images with links
         $caption_pattern = '/(<figure[^>]+? class=)[\'"]?([^\'">]+)[\'"]?(.*?<img[^>]+? src=)[\'"]?([^\'"\s>]+)[\'"]?(.*?<\/figure>)/si';
         $caption_replacement = sprintf( '<div class="flickity-carousel-cell"><div class="maintain-aspect-wrap">${1}"${2} maintain-aspect-media"src=${3}"%s" data-flickity-lazyload="${4}"${5}</div></div>', $placeholder );
 

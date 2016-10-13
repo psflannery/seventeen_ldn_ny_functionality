@@ -49,6 +49,52 @@ function seventeen_ldn_ny_custom_tax_artists() {
 }
 add_action( 'init', 'seventeen_ldn_ny_custom_tax_artists', 0 );
 
+
+// Register Custom Curator Taxonomy
+function seventeen_ldn_ny_custom_tax_curators() {
+
+	$labels = array(
+		'name'                       => _x( 'Curators', 'Taxonomy General Name', 'seventeen-ldn-ny' ),
+		'singular_name'              => _x( 'Curator', 'Taxonomy Singular Name', 'seventeen-ldn-ny' ),
+		'menu_name'                  => __( 'Curators', 'seventeen-ldn-ny' ),
+		'all_items'                  => __( 'All curators', 'seventeen-ldn-ny' ),
+		'parent_item'                => __( 'Parent Curator', 'seventeen-ldn-ny' ),
+		'parent_item_colon'          => __( 'Parent Curator:', 'seventeen-ldn-ny' ),
+		'new_item_name'              => __( 'New Curator Name', 'seventeen-ldn-ny' ),
+		'add_new_item'               => __( 'Add New Curator', 'seventeen-ldn-ny' ),
+		'edit_item'                  => __( 'Edit Curator', 'seventeen-ldn-ny' ),
+		'update_item'                => __( 'Update Curator', 'seventeen-ldn-ny' ),
+		'view_item'                  => __( 'View Curator', 'seventeen-ldn-ny' ),
+		'separate_items_with_commas' => __( 'Separate curator with commas', 'seventeen-ldn-ny' ),
+		'add_or_remove_items'        => __( 'Add or remove curators', 'seventeen-ldn-ny' ),
+		'choose_from_most_used'      => __( 'Choose from the most used', 'seventeen-ldn-ny' ),
+		'popular_items'              => __( 'Popular Curators', 'seventeen-ldn-ny' ),
+		'search_items'               => __( 'Search Curators', 'seventeen-ldn-ny' ),
+		'not_found'                  => __( 'Not Found', 'seventeen-ldn-ny' ),
+		'no_terms'                   => __( 'No Curators', 'seventeen-ldn-ny' ),
+		'items_list'                 => __( 'Curators list', 'seventeen-ldn-ny' ),
+		'items_list_navigation'      => __( 'Curators list navigation', 'seventeen-ldn-ny' ),
+	);
+	$args = array(
+		'labels'                     => $labels,
+		'hierarchical'               => false,
+		'public'                     => true,
+		'show_ui'                    => true,
+		'show_admin_column'          => true,
+		'show_in_nav_menus'          => true,
+		'show_tagcloud'              => true,
+		'query_var'                  => true,
+  		'rewrite'                    => array( 'slug' => 'curators' ),
+  		'show_in_rest'               => true,
+  		'rest_base'                  => 'curators',
+  		'rest_controller_class'      => 'WP_REST_Terms_Controller',
+	);
+	register_taxonomy( 'curator', array( 'exhibitions' ), $args );
+
+}
+add_action( 'init', 'seventeen_ldn_ny_custom_tax_curators', 0 );
+
+
 // Register Custom Location Taxonomy
 function seventeen_ldn_ny_custom_tax_locations() {
 
