@@ -92,7 +92,7 @@ function seventeen_ldn_ny_event_dates() {
             if ( '' !== $event_end_time ):
                 $event .= esc_html( ' - ', 'seventeen-ldn-ny' );
             endif;
-            
+
             $event .= $event_end_time;
 
             return esc_html( $event );
@@ -105,7 +105,7 @@ function seventeen_ldn_ny_event_dates() {
  *
  * @since Seventeen 1.0.0
  */
-function seventeen_ldn_ny_do_pv_dates( $before = '', $after = '', $echo = true ) {
+function seventeen_ldn_ny_do_event_dates( $before = '', $after = '', $echo = true ) {
 	$event_date = seventeen_ldn_ny_event_dates();
 
 	if ( strlen($event_date) == 0 )
@@ -221,8 +221,9 @@ function seventeen_ldn_ny_curator_details() {
     global $post;
     $curator = get_post_meta($post->ID, '_seventeen_curated_by', true);
 
-    if ( '' === $curator )
+    if ( '' == $curator ) {
         return;
+    }
 
     return $curator;
 }
@@ -235,8 +236,9 @@ function seventeen_ldn_ny_curator_details() {
 function seventeen_ldn_ny_do_curator_details( $before = '', $after = '' ) {
     $curator = seventeen_ldn_ny_curator_details();
 
-    if ( '' === $curator )
+    if ( '' == $curator ) {
         return;
+    }
 
     $curator = $before . $curator . $after;
 
@@ -244,12 +246,13 @@ function seventeen_ldn_ny_do_curator_details( $before = '', $after = '' ) {
 }
 
 /**
- * Returns HTML for the Artist Full screen slides added in the post meta.
+ * Returns HTML for the Artist or Exhibition images added in the post meta.
  * 
  * @since Seventeen 1.0.0
  */
-function seventeen_ldn_ny_artist_slides() {
+function seventeen_ldn_ny_artist_images() {
     $slides = seventeen_ldn_ny_get_wysiwyg_output( '_seventeen_artist_slide_images' );
+    $slides .= seventeen_ldn_ny_get_wysiwyg_output( '_seventeen_exhibition_documentation_images' );
 
     if ( '' == $slides )
         return;
@@ -258,12 +261,12 @@ function seventeen_ldn_ny_artist_slides() {
 }
 
 /**
- * Echos HTML for the Artist Full screen slides added in the post meta.
+ * Echos HTML for the Artist or Exhibition images added in the post meta.
  *
  * @since Seventeen 1.0.0
  */
-function seventeen_ldn_ny_do_artist_slides( $before = '', $after = '' ) {
-    $slides = seventeen_ldn_ny_artist_slides();
+function seventeen_ldn_ny_do_artist_images( $before = '', $after = '' ) {
+    $slides = seventeen_ldn_ny_artist_images();
 
     if ( '' == $slides )
         return;

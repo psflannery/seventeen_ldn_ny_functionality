@@ -34,16 +34,19 @@ class SEVENTEEN_Contact_Details_Widget extends WP_Widget {
 		
 		// Widget Slug
 		$widget_slug = 'seventeen-contact-address';
+
 		// widget basics
 		$widget_ops = array(
 			'classname'   => $widget_slug,
 			'description' => 'A widget to diplay the gallery address and contact details.'
 		);
+
 		// widget controls
 		$control_ops = array(
 			'id_base' => $widget_slug,
 			//'width'   => '400',
 		);
+
 		// load widget
 		parent::__construct( $widget_slug, 'Contact Details', $widget_ops, $control_ops );		
 	}
@@ -58,43 +61,62 @@ class SEVENTEEN_Contact_Details_Widget extends WP_Widget {
 	 */
 	function widget( $args, $instance ) {
 		extract( $args );
+
 		// Merge with defaults
 		$instance = wp_parse_args( (array) $instance, $this->defaults );
+
 		echo $before_widget;
+			
 			// Title
 			if ( !empty( $instance['title'] ) ) { 
 				echo $before_title . apply_filters( 'widget_title', $instance['title'] ) . $after_title;
 			}
+
 			echo '<div class="site-info vcard">';
+
 			if( !empty ( $instance['street'] ) || !empty ( $instance['city'] ) || !empty ( $instance['postcode'] ) ) {
 				echo '<p class="adr">';
+
+				// Map - open anchor
+				if ( !empty( $instance['map'] ) ) {
+					echo '<a href="' . esc_url( $instance['map'] )  . '"" target="_blank" rel="noopener" class="link-text-color">';
+				}
+				
 				// Street
 				if ( !empty( $instance['street'] ) ) {
 					echo '<span class="street-address">' . esc_html( $instance['street'] ) . '</span>';
 				}
+				
 				// City
 				if ( !empty( $instance['city'] ) ) {
 					echo '<span class="region">' . esc_html( $instance['city'] ) . '</span>';
 				}
+				
 				// Post Code
 				if ( !empty( $instance['post_code'] ) ) {
 					echo '<span class="postal-code">' . esc_html( $instance['post_code'] ) . '</span>';
 				}
+				
+				// Map - close anchor
+				if ( !empty( $instance['map'] ) ) {
+					echo '</a>';
+				}
+
 				echo '</p>';
 			}
+			
 			// Phone
 			if ( !empty( $instance['phone'] ) ) {
 				echo '<span class="tel">' . esc_html( $instance['phone'] ) . '</span>';
 			}
+			
 			// Email
 			if ( !empty( $instance['email'] ) ) {
 				echo '<span class="email"><a href="mailto:' . antispambot( esc_url( $instance['email'] ) ) . '" target="_blank">' . antispambot( esc_url( $instance['email'] ) ) . '</a></span>';
 			}
-			// Map
-			if ( !empty( $instance['map'] ) ) {
-				echo '<span class="map"><a href="' . esc_url( $instance['map'] )  . ' target="_blank" rel="noopener">' . esc_html( 'Map', 'seventeen-ldn-ny' ) . '</a></span>';
-			}
+
 			echo '</div>';
+
 		echo $after_widget;
 	}
 

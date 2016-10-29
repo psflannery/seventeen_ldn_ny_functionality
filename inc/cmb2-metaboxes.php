@@ -23,6 +23,33 @@ function seventeen_ldn_ny_cmb_set_date_format( $l10n ) {
 // Exhibitions
 //---------------------------------------------------------------------
 
+// Slides
+add_action( 'cmb2_admin_init', 'seventeen_ldn_ny_register_exhibition_images' );
+function seventeen_ldn_ny_register_exhibition_images() {
+	$prefix = '_seventeen_';
+
+	$exhibition_images = new_cmb2_box( array(
+		'id'           => $prefix . 'exhibition_images',
+		'title'        => __( 'Exhibition Images', 'seventeen-ldn-ny' ),
+		'object_types' => array( 'exhibitions', ),
+		'context'      => 'normal',
+		'priority'     => 'high',
+		'show_names'   => true,
+	) );
+
+	$exhibition_images->add_field( array(
+		'id'      => $prefix . 'exhibition_documentation_images',
+		'name'    => esc_html__( 'Images', 'seventeen-ldn-ny' ),
+		'desc'    => esc_html__( 'Add images and videos to document the exhibition here.', 'seventeen-ldn-ny' ),
+		'type'    => 'wysiwyg',
+		'sanitization_cb' => 'seventeen_ldn_ny_sanitize_wysiwyg', // function should return a sanitized value
+		'options' => array( 
+			'textarea_rows' => 25,
+			'teeny'         => true,
+		),
+	) );
+}
+
 add_action( 'cmb2_admin_init', 'seventeen_ldn_ny_register_exhibition_dates' );
 function seventeen_ldn_ny_register_exhibition_dates() {
 	$prefix = '_seventeen_';
@@ -111,7 +138,7 @@ function seventeen_ldn_ny_register_artist_slides() {
 
 	$artist_full_screen_slides = new_cmb2_box( array(
 		'id'           => $prefix . 'artist_slides',
-		'title'        => __( 'Slides', 'seventeen-ldn-ny' ),
+		'title'        => __( 'Artist Slides', 'seventeen-ldn-ny' ),
 		'object_types' => array( 'artists', ),
 		'context'      => 'normal',
 		'priority'     => 'high',

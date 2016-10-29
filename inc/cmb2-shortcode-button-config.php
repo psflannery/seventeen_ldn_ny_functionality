@@ -58,6 +58,7 @@ function shortcode_button_cmb_config( $button_data ) {
                 'id'      => 'class',
                 'type'    => 'select',
                 'options' => array(
+                    'info'      => __( 'Info', 'seventeen-ldn-ny' ),
                     'row'       => __( 'Row', 'seventeen-ldn-ny' ), 
                     'col-sm-12' => __( 'Full width', 'seventeen-ldn-ny' ),
                     'col-sm-9'  => __( '3/4 width', 'seventeen-ldn-ny' ),
