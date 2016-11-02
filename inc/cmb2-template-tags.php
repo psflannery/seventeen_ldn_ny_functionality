@@ -246,6 +246,23 @@ function seventeen_ldn_ny_do_curator_details( $before = '', $after = '' ) {
 }
 
 /**
+ * Echos HTML for the featured Oembeds added in the post meta.
+ *
+ * @since Seventeen 1.0.0
+ */
+function seventeen_ldn_ny_do_oembed( $before = '', $after = '' ) {
+    $embed = esc_url( get_post_meta( get_the_ID(), '_seventeen_news_featured_embed', 1 ) );
+
+    if ( '' == $embed ) {
+        return;
+    }
+
+    $embed = $before . wp_oembed_get( $embed ) . $after;
+
+    echo $embed;
+}
+
+/**
  * Returns HTML for the Artist or Exhibition images added in the post meta.
  * 
  * @since Seventeen 1.0.0
@@ -338,16 +355,16 @@ function seventeen_ldn_ny_get_wysiwyg_output( $meta_key, $post_id = 0 ) {
 
         // Images without captions
         $img_pattern = '/<p>\\s*?(<a rel=\"attachment.*?><img([^>]+?)src=[\'"]?([^\'"\s>]+)[\'"]?([^>]*)><\\/a>|<img([^>]+?)src=[\'"]?([^\'"\s>]+)[\'"]?([^>]*)>)?\\s*<\\/p>/s';
-        $img_replacement = sprintf( '<div class="flickity-carousel-cell"><div class="maintain-aspect-wrap"><div class="maintain-aspect-media wp-captionless"><img${5}src="%s" data-flickity-lazyload="${6}"${7}></div></div></div>', $placeholder );
+        $img_replacement = sprintf( '<div class="flickity-carousel-cell flickity-carousel-lazy"><div class="maintain-aspect-wrap"><div class="maintain-aspect-media wp-captionless"><img${5}src="%s" data-flickity-lazyload="${6}"${7}></div></div></div>', $placeholder );
 
         // Iframes
         $iframe_pattern = '/(<div[^>]*>?\s*<figure class=)[\'"]?([^\'"\s>]+)[\'"]?(.*?<\/div>)/s';
-        $iframe_replacement = '<div class="flickity-carousel-cell">${1}"${2} flickity-video-screen"${3}</div>';
+        $iframe_replacement = '<div class="flickity-carousel-cell flickity-carousel-lazy">${1}"${2} flickity-video-screen"${3}</div>';
 
         // Images with captions
         // May need to allow for images with links
         $caption_pattern = '/(<figure[^>]+? class=)[\'"]?([^\'">]+)[\'"]?(.*?<img[^>]+? src=)[\'"]?([^\'"\s>]+)[\'"]?(.*?<\/figure>)/si';
-        $caption_replacement = sprintf( '<div class="flickity-carousel-cell"><div class="maintain-aspect-wrap">${1}"${2} maintain-aspect-media"src=${3}"%s" data-flickity-lazyload="${4}"${5}</div></div>', $placeholder );
+        $caption_replacement = sprintf( '<div class="flickity-carousel-cell flickity-carousel-lazy"><div class="maintain-aspect-wrap">${1}"${2} maintain-aspect-media"src=${3}"%s" data-flickity-lazyload="${4}"${5}</div></div>', $placeholder );
 
         $patterns = array( $img_pattern, $caption_pattern, $iframe_pattern );
         $replacements = array( $img_replacement, $caption_replacement, $iframe_replacement );

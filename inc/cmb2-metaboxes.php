@@ -268,6 +268,31 @@ function seventeen_ldn_ny_register_news_events() {
 
 }
 
+add_action( 'cmb2_admin_init', 'seventeen_ldn_ny_register_news_featured_video' );
+function seventeen_ldn_ny_register_news_featured_video() {
+	$prefix = '_seventeen_';
+
+	$news_feaured_video = new_cmb2_box( array(
+		'id'            => $prefix . 'news_feaured_video',
+		'title'         => __( 'Featured Video', 'seventeen-ldn-ny' ),
+		'object_types'  => array( 'post', ),
+		'context'       => 'normal',
+		'priority'      => 'high',
+		'show_names'    => true,
+	) );
+
+	$news_feaured_video->add_field( array(
+		'name' => esc_html__( 'URL', 'seventeen-ldn-ny' ),
+		'desc' => sprintf(
+			/* translators: %s: link to codex.wordpress.org/Embeds */
+			esc_html__( 'Enter a youtube, vimeo, twitter, or instagram URL. Supports services listed at %s.', 'seventeen-ldn-ny' ),
+			'<a href="https://codex.wordpress.org/Embeds" target="_blank" rel="noopener">codex.wordpress.org/Embeds</a>'
+		),
+		'id'   => $prefix . 'news_featured_embed',
+		'type' => 'oembed',
+	) );
+}
+
 
 // Layout
 //---------------------------------------------------------------------
