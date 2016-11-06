@@ -216,7 +216,7 @@ function seventeen_ldn_ny_do_artist_info( $before = '', $after = '', $wrap = fal
  * Returns HTML for the Curator Details added in the post meta.
  * 
  * @since Seventeen 1.0.0
- */
+ *
 function seventeen_ldn_ny_curator_details() {
     global $post;
     $curator = get_post_meta($post->ID, '_seventeen_curated_by', true);
@@ -227,14 +227,17 @@ function seventeen_ldn_ny_curator_details() {
 
     return $curator;
 }
+*/
 
 /**
  * Echos HTML for the Curator Details added in the post meta.
  * 
  * @since Seventeen 1.0.0
  */
-function seventeen_ldn_ny_do_curator_details( $before = '', $after = '' ) {
-    $curator = seventeen_ldn_ny_curator_details();
+function seventeen_ldn_ny_do_curator_details( $before = '', $after = '', $echo = true ) {
+    //$curator = seventeen_ldn_ny_curator_details();
+    global $post;
+    $curator = get_post_meta($post->ID, '_seventeen_curated_by', true);
 
     if ( '' == $curator ) {
         return;
@@ -242,7 +245,11 @@ function seventeen_ldn_ny_do_curator_details( $before = '', $after = '' ) {
 
     $curator = $before . $curator . $after;
 
-    echo $curator;
+    //echo $curator;
+    if ( $echo )
+        echo $curator;
+    else
+        return $curator;
 }
 
 /**
@@ -293,38 +300,6 @@ function seventeen_ldn_ny_do_artist_images( $before = '', $after = '' ) {
     echo $slides;
 }
 
-/**
- * Returns HTML for the Artist Exhibition Info added in the post meta.
- * 
- * @since Seventeen 1.0.0
- */
-function seventeen_ldn_ny_artist_exhibition_info( $before = '', $after = '', $wrap = false ) {
-    global $post;
-
-    $exhibitions = get_post_meta( get_the_ID(), '_seventeen_attached_artist_exhibitions', true );
-
-    if ( '' == $exhibitions ) {
-        // Bail if we don't have any exhibitions.
-        return;
-    }
-
-    echo '<h2>' . esc_html( 'Exhibitions', 'seventeen-ldn-ny' ) . '</h2>';
-
-    if ( $wrap && $exhibitions ) {
-        echo '<ul class="list-unstyled">';
-    }
-
-    foreach ( $exhibitions as $exhibition ) {
-        $post = get_post( $exhibition );
-        setup_postdata( $post );
-        the_title( $before . '<a href="' . esc_url( get_permalink() ) . '" rel="bookmark">', '</a>' . $after );
-    }
-    wp_reset_postdata();
-
-    if ( $wrap && $exhibitions ) {
-        echo '</ul>';
-    }
-}
 
 // Helper Functions
 //---------------------------------------------------------------------

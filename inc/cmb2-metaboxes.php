@@ -198,34 +198,6 @@ function seventeen_ldn_ny_register_artist_info() {
 	) );
 }
 
-// Exhibitions
-add_action( 'cmb2_admin_init', 'seventeen_ldn_ny_register_artist_exhibitions' );
-function seventeen_ldn_ny_register_artist_exhibitions() {
-	$prefix = '_seventeen_';
-
-	$artist_exhibitions = new_cmb2_box( array(
-		'id'           => $prefix . 'artist_exhibitions',
-		'title'        => __( 'Exhibitions', 'seventeen-ldn-ny' ),
-		'object_types' => array( 'artists', ),
-		'context'      => 'normal',
-		'priority'     => 'high',
-		'show_names'   => true,
-	) );
-
-	$artist_exhibitions->add_field( array(
-		//'name'    => __( 'Attached Exhibitions', 'seventeen-ldn-ny' ),
-		'desc'    => __( 'Drag exhibitions from the left column to the right column to attach them to this page.<br />You may rearrange the order of the exhibitions in the right column by dragging and dropping.', 'seventeen-ldn-ny' ),
-		'id'      => $prefix . 'attached_artist_exhibitions',
-		'type'    => 'custom_attached_posts',
-		'options' => array(
-			//'show_thumbnails' => true,
-			'filter_boxes' => true,
-			'query_args'   => array( 'posts_per_page' => -1, 'post_type'	=> 'exhibitions', ), // override the get_posts args
-		)
-	) );
-
-}
-
 
 // News (Posts)
 //---------------------------------------------------------------------
