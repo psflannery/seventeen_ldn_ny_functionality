@@ -295,7 +295,7 @@ function seventeen_ldn_ny_do_artist_images( $before = '', $after = '' ) {
     if ( '' == $slides )
         return;
 
-    $slides = $before . $slides . $after;
+    $slides = $before . apply_filters( 'bj_lazy_load_html', $slides ) . $after;
 
     echo $slides;
 }
