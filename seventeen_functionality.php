@@ -45,6 +45,7 @@ include_once( SEVENTEEN_DIR . '/inc/cmb2-attached-posts-field.php' );
 include_once( SEVENTEEN_DIR . '/inc/cmb2-shortcode-button.php' );
 include_once( SEVENTEEN_DIR . '/inc/cmb2-shortcode-button-config.php' );
 include_once( SEVENTEEN_DIR . '/inc/contact-widget.php' );
+include_once( SEVENTEEN_DIR . '/inc/mailing-list-widget.php' );
 include_once( SEVENTEEN_DIR . '/inc/custom-post-types.php' );
 include_once( SEVENTEEN_DIR . '/inc/custom-taxonomies.php' );
 include_once( SEVENTEEN_DIR . '/inc/housekeeping.php' );
