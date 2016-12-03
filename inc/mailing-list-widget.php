@@ -74,19 +74,19 @@ class SEVENTEEN_Mailing_List_Widget extends WP_Widget {
                 <div class="row">
                     <div class="col-sm-6">
                         <div class="control-group">
-                            <label class="control-label" for="email_address" ><?php esc_html_e( 'Email Address:', 'seventeen-ldn-ny' ); ?></label>
+                            <!--<label class="control-label" for="email_address" ><?php //esc_html_e( 'Email Address:', 'seventeen-ldn-ny' ); ?></label>-->
                             <div class="controls">
                                 <input id="email" name="email_address" type="email" placeholder="Email" class="form-control" required tabindex="1">
                             </div>
                         </div>
                         <div class="control-group">
-                            <label class="control-label" for="first_name"><?php esc_html_e( 'First Name:', 'seventeen-ldn-ny' ); ?></label>
+                            <!--<label class="control-label" for="first_name"><?php //esc_html_e( 'First Name:', 'seventeen-ldn-ny' ); ?></label>-->
                             <div class="controls">
                                 <input id="first-name" name="first_name" type="text" placeholder="First Name" class="form-control" required tabindex="2">
                             </div>
                         </div>
                         <div class="control-group">
-                            <label class="control-label" for="last_name"><?php esc_html_e( 'Last Name:', 'seventeen-ldn-ny' ); ?></label>
+                            <!--<label class="control-label" for="last_name"><?php //esc_html_e( 'Last Name:', 'seventeen-ldn-ny' ); ?></label>-->
                             <div class="controls">
                                 <input id="last-name" name="last_name" type="text" placeholder="Last Name" class="form-control" required tabindex="3">
                             </div>
