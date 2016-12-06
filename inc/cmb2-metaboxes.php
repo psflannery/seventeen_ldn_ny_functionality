@@ -127,6 +127,44 @@ function seventeen_ldn_ny_register_curator_details() {
 	) );
 }
 
+add_action( 'cmb2_admin_init', 'seventeen_ldn_ny_register_exhibition_download' );
+function seventeen_ldn_ny_register_exhibition_download() {
+	$prefix = '_seventeen_';
+
+	$exhibition_download_group = new_cmb2_box( array(
+		'id'           => $prefix . 'exhibition_downloads',
+		'title'        => __( 'Downloads', 'seventeen-ldn-ny' ),
+		'object_types' => array( 'exhibitions', ),
+		'context'      => 'normal',
+		'priority'     => 'high',
+		'show_names'   => true,
+	) );
+
+	$exhibition_download_group_field_id = $exhibition_download_group->add_field( array(
+		'id'          => $prefix . 'exhibition_download',
+		'type'        => 'group',
+		'desc'        => __( 'Add a file or files that you want to make available for download. (Optional).', 'seventeen-ldn-ny' ),
+		'options'     => array(
+			'group_title'   => esc_html__( 'Download {#}', 'seventeen-ldn-ny' ), // {#} gets replaced by row number
+			'add_button'    => esc_html__( 'Add Another Item', 'seventeen-ldn-ny' ),
+			'remove_button' => esc_html__( 'Remove Item', 'seventeen-ldn-ny' ),
+			'sortable'      => true,
+		),
+	) );
+
+	$exhibition_download_group->add_group_field( $exhibition_download_group_field_id, array(
+		'name' => esc_html__( 'Text', 'seventeen-ldn-ny' ),
+		'id'   => 'exhibition_download_text',
+		'type' => 'text',
+	) );
+
+	$exhibition_download_group->add_group_field( $exhibition_download_group_field_id, array(
+		'name' => esc_html__( 'File', 'seventeen-ldn-ny' ),
+		'id'   => 'exhibition_download_file',
+		'type' => 'file',
+	) );
+}
+
 
 // Artists
 //---------------------------------------------------------------------

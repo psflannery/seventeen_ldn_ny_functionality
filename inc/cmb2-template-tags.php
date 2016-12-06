@@ -192,7 +192,7 @@ function seventeen_ldn_ny_do_artist_info( $before = '', $after = '', $wrap = fal
     $output = '';
 
     if ( $wrap && $links ) {
-        $output .= '<ul class="list-unstyled">';
+        $output .= '<ul class="list-unstyled artist-info">';
     }
 
     foreach( $links as $text => $link ){
@@ -298,6 +298,42 @@ function seventeen_ldn_ny_do_artist_images( $before = '', $after = '' ) {
     $slides = $before . apply_filters( 'bj_lazy_load_html', $slides ) . $after;
 
     echo $slides;
+}
+
+/**
+ * Echos HTML for the Exhibition downloads added in the post meta.
+ * 
+ * @since Seventeen 1.0.0
+ */
+function seventeen_ldn_ny_do_exhibition_download() {
+    $files = get_post_meta( get_the_ID(), '_seventeen_exhibition_download', true );
+
+    //if ( '' == $files )
+    //    return;
+
+    $output = '';
+
+    $output .= '<ul class="list-unstyled">';
+    foreach ( (array) $files as $key => $file ) {
+
+        $text = $link = '';
+
+        if ( isset( $file['exhibition_download_text'] ) ) {
+            $text = esc_html( $file['exhibition_download_text'] );
+        }
+
+        if ( isset( $file['exhibition_download_file'] ) ) {
+            $link = esc_url( $file['exhibition_download_file'] );
+        }
+
+        $output .='<li>';
+        //$output .= sprintf( '<a href="%s">%s</a>', $link, $text );
+        $output .= '<a href="' . $link . '">' . $text . '</a>';
+        $output .= '</li>';
+    }
+    $output .= '</ul>';
+
+    echo $output;
 }
 
 
