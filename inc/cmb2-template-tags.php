@@ -308,8 +308,8 @@ function seventeen_ldn_ny_do_artist_images( $before = '', $after = '' ) {
 function seventeen_ldn_ny_do_exhibition_download() {
     $files = get_post_meta( get_the_ID(), '_seventeen_exhibition_download', true );
 
-    //if ( '' == $files )
-    //    return;
+    if ( '' == $files )
+        return;
 
     $output = '';
 
@@ -320,6 +320,8 @@ function seventeen_ldn_ny_do_exhibition_download() {
 
         if ( isset( $file['exhibition_download_text'] ) ) {
             $text = esc_html( $file['exhibition_download_text'] );
+        } else {
+            $text = esc_html__( 'Download', 'seventeen-ldn-ny' );
         }
 
         if ( isset( $file['exhibition_download_file'] ) ) {
@@ -327,8 +329,7 @@ function seventeen_ldn_ny_do_exhibition_download() {
         }
 
         $output .='<li>';
-        //$output .= sprintf( '<a href="%s">%s</a>', $link, $text );
-        $output .= '<a href="' . $link . '">' . $text . '</a>';
+        $output .= sprintf( '<a href="%s">%s</a>', $link, $text );
         $output .= '</li>';
     }
     $output .= '</ul>';
@@ -379,6 +380,20 @@ function seventeen_ldn_ny_get_wysiwyg_output( $meta_key, $post_id = 0 ) {
 
         $patterns = array( $img_pattern, $caption_pattern, $iframe_pattern );
         $replacements = array( $img_replacement, $caption_replacement, $iframe_replacement );
+
+        $content = preg_replace( $patterns, $replacements, $content );
+    }
+    if ( 'exhibitions' === get_post_type() ) {
+        // Images without captions
+        $img_pattern = '/<p>\\s*?(<a rel=\"attachment.*?><img([^>]+?)src=[\'"]?([^\'"\s>]+)[\'"]?([^>]*)><\\/a>|<img([^>]+?)src=[\'"]?([^\'"\s>]+)[\'"]?([^>]*)>)?\\s*<\\/p>/s';
+        $img_replacement = sprintf( '<div class="col-sm-6 col-md-4 masonry-item"><img${5}src="${6}"${7}></div>' );
+
+        // Images with captions
+        $caption_pattern = '/(<figure[^>]+? class=)[\'"]?([^\'">]+)[\'"]?(.*?<img[^>]+? src=)[\'"]?([^\'"\s>]+)[\'"]?(.*?<\/figure>)/si';
+        $caption_replacement = sprintf( '<div class="col-sm-6 col-md-4 masonry-item">${1}${2}${3}${4}${5}</div>' );
+
+        $patterns = array( $img_pattern, $caption_pattern );
+        $replacements = array( $img_replacement, $caption_replacement );
 
         $content = preg_replace( $patterns, $replacements, $content );
     }
