@@ -192,11 +192,11 @@ function seventeen_ldn_ny_do_artist_info( $before = '', $after = '', $wrap = fal
     $output = '';
 
     if ( $wrap && $links ) {
-        $output .= '<ul class="list-unstyled artist-info">';
+        $output .= '<ul class="list-unstyled artist-info event-meta-small">';
     }
 
     foreach( $links as $text => $link ){
-        $output .= sprintf( '%s<a href="%s">' . get_the_title() . ' ' . '%s</a>%s', $before, $link, $text, $after );
+        $output .= sprintf( '%s<a href="%s">' . get_the_title() . ' - ' . '%s</a>%s', $before, $link, $text, $after );
     }
 
     if ( '' != $addtional_links ) {
@@ -313,7 +313,7 @@ function seventeen_ldn_ny_do_exhibition_download() {
 
     $output = '';
 
-    $output .= '<ul class="list-unstyled">';
+    $output .= '<ul class="list-unstyled event-meta-small">';
     foreach ( (array) $files as $key => $file ) {
 
         $text = $link = '';
@@ -383,6 +383,7 @@ function seventeen_ldn_ny_get_wysiwyg_output( $meta_key, $post_id = 0 ) {
 
         $content = preg_replace( $patterns, $replacements, $content );
     }
+
     if ( 'exhibitions' === get_post_type() ) {
         // Images without captions
         $img_pattern = '/<p>\\s*?(<a rel=\"attachment.*?><img([^>]+?)src=[\'"]?([^\'"\s>]+)[\'"]?([^>]*)><\\/a>|<img([^>]+?)src=[\'"]?([^\'"\s>]+)[\'"]?([^>]*)>)?\\s*<\\/p>/s';
@@ -390,7 +391,12 @@ function seventeen_ldn_ny_get_wysiwyg_output( $meta_key, $post_id = 0 ) {
 
         // Images with captions
         $caption_pattern = '/(<figure[^>]+? class=)[\'"]?([^\'">]+)[\'"]?(.*?<img[^>]+? src=)[\'"]?([^\'"\s>]+)[\'"]?(.*?<\/figure>)/si';
-        $caption_replacement = sprintf( '<div class="col-sm-6 col-md-4 masonry-item">${1}${2}${3}${4}${5}</div>' );
+
+        if ( ! is_front_page() ) {
+            $caption_replacement = sprintf( '<div class="col-sm-6 col-md-4 masonry-item">${1}${2}${3}${4}${5}</div>' );
+        } else {
+            $caption_replacement = sprintf( '<div class="col-sm-6 masonry-item">${1}${2}${3}${4}${5}</div>' );
+        }
 
         $patterns = array( $img_pattern, $caption_pattern );
         $replacements = array( $img_replacement, $caption_replacement );
