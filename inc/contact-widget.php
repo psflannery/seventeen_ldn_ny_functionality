@@ -84,17 +84,17 @@ class SEVENTEEN_Contact_Details_Widget extends WP_Widget {
 				
 				// Street
 				if ( !empty( $instance['street'] ) ) {
-					echo '<span class="street-address">' . esc_html( $instance['street'] ) . '</span>';
+					echo '<span class="street-address info-item">' . esc_html( $instance['street'] ) . '</span>';
 				}
 				
 				// City
 				if ( !empty( $instance['city'] ) ) {
-					echo '<span class="region">' . esc_html( $instance['city'] ) . '</span>';
+					echo '<span class="region info-item">' . esc_html( $instance['city'] ) . '</span>';
 				}
 				
 				// Post Code
 				if ( !empty( $instance['post_code'] ) ) {
-					echo '<span class="postal-code">' . esc_html( $instance['post_code'] ) . '</span>';
+					echo '<span class="postal-code info-item">' . esc_html( $instance['post_code'] ) . '</span>';
 				}
 				
 				// Map - close anchor
@@ -107,12 +107,12 @@ class SEVENTEEN_Contact_Details_Widget extends WP_Widget {
 			
 			// Phone
 			if ( !empty( $instance['phone'] ) ) {
-				echo '<span class="tel">' . esc_html( $instance['phone'] ) . '</span>';
+				echo '<span itemprop="telephone" class="tel info-item">' . esc_html( $instance['phone'] ) . '</span>';
 			}
 			
 			// Email
 			if ( !empty( $instance['email'] ) ) {
-				echo '<span class="email"><a href="mailto:' . antispambot( esc_url( $instance['email'] ) ) . '" target="_blank">' . antispambot( esc_url( $instance['email'] ) ) . '</a></span>';
+				echo '<span class="email info-item"><a href="mailto:' . antispambot( sanitize_email( $instance['email'] ) ) . '" target="_blank" class="link-text-color">' . antispambot( sanitize_email( $instance['email'] ) ) . '</a></span>';
 			}
 
 			echo '</div>';
@@ -135,7 +135,7 @@ class SEVENTEEN_Contact_Details_Widget extends WP_Widget {
 		$new_instance['city']      = esc_html( $new_instance['city'] );
 		$new_instance['post_code'] = esc_html( $new_instance['post_code'] );
 		$new_instance['phone']     = esc_html( $new_instance['phone'] );
-		$new_instance['email']     = esc_url( $new_instance['email'] );
+		$new_instance['email']     = sanitize_email( $new_instance['email'] );
 		$new_instance['map']       = esc_url( $new_instance['map'] );
 		return $new_instance;
 	}

@@ -127,6 +127,28 @@ function seventeen_ldn_ny_register_curator_details() {
 	) );
 }
 
+add_action( 'cmb2_admin_init', 'seventeen_ldn_ny_register_offsite_location' );
+function seventeen_ldn_ny_register_offsite_location() {
+	$prefix = '_seventeen_';
+
+	$offsite_location = new_cmb2_box( array(
+		'id'           => $prefix . 'offsite_location',
+		'title'        => __( 'Offsite Location', 'seventeen-ldn-ny' ),
+		'object_types' => array( 'exhibitions', ),
+		'context'      => 'normal',
+		'priority'     => 'high',
+		'show_names'   => true,
+	) );
+
+	$offsite_location->add_field( array(
+		'name'        => __( 'Location', 'seventeen-ldn-ny' ),
+		'desc'        => __( 'Add details of the exhibition location. (Optional).', 'seventeen-ldn-ny' ),
+		'id'          => $prefix . 'location',
+		'type'        => 'text',
+	) );
+}
+
+
 add_action( 'cmb2_admin_init', 'seventeen_ldn_ny_register_exhibition_download' );
 function seventeen_ldn_ny_register_exhibition_download() {
 	$prefix = '_seventeen_';
@@ -300,6 +322,81 @@ function seventeen_ldn_ny_register_news_featured_video() {
 		),
 		'id'   => $prefix . 'news_featured_embed',
 		'type' => 'oembed',
+	) );
+}
+
+
+// Page - Information
+//---------------------------------------------------------------------
+
+add_action( 'cmb2_admin_init', 'seventeen_ldn_ny_register_team_info_metabox' );
+function seventeen_ldn_ny_register_team_info_metabox() {
+	$prefix = '_seventeen_';
+
+	/**
+	 * Repeatable Field Groups
+	 */
+	$team_info_group = new_cmb2_box( array(
+		'id'           => $prefix . 'team_info',
+		'title'        => esc_html__( 'The Seventeen Team', 'seventeen-ldn-ny' ),
+		'object_types' => array( 'page', ),
+		'show_on'      => array( 'key' => 'page-template', 'value' => 'page-templates/info-page.php' ),
+	) );
+
+	// $team_info_group_field_id is the field id string, so in this case: $prefix . 'team_contact_info'
+	$team_info_group_field_id = $team_info_group->add_field( array(
+		'id'          => $prefix . 'team_contact_info',
+		'type'        => 'group',
+		'description' => esc_html__( 'Add details and contact info for the Seventeen team.', 'seventeen-ldn-ny' ),
+		'options'     => array(
+			'group_title'   => esc_html__( 'Person {#}', 'seventeen-ldn-ny' ), // {#} gets replaced by row number
+			'add_button'    => esc_html__( 'Add Another Person', 'seventeen-ldn-ny' ),
+			'remove_button' => esc_html__( 'Remove Person', 'seventeen-ldn-ny' ),
+			'sortable'      => true, // beta
+		),
+	) );
+
+	/**
+	 * Group fields works the same, except ids only need
+	 * to be unique to the group. Prefix is not needed.
+	 *
+	 * The parent field's id needs to be passed as the first argument.
+	 */
+	$team_info_group->add_group_field( $team_info_group_field_id, array(
+		'name'       => esc_html__( 'Name', 'seventeen-ldn-ny' ),
+		'id'         => 'name',
+		'type'       => 'text',
+	) );
+	$team_info_group->add_group_field( $team_info_group_field_id, array(
+		'name'        => esc_html__( 'Title', 'seventeen-ldn-ny' ),
+		'description' => esc_html__( 'Optional', 'seventeen-ldn-ny' ),
+		'id'          => 'title',
+		'type'        => 'text',
+	) );
+	$team_info_group->add_group_field( $team_info_group_field_id, array(
+		'name'        => esc_html__( 'Phone', 'seventeen-ldn-ny' ),
+		'description' => esc_html__( 'Optional', 'seventeen-ldn-ny' ),
+		'id'          => 'phone',
+		'type'        => 'text',
+	) );
+	$team_info_group->add_group_field( $team_info_group_field_id, array(
+		'name'        => esc_html__( 'Email', 'seventeen-ldn-ny' ),
+		'description' => esc_html__( 'Optional', 'seventeen-ldn-ny' ),
+		'id'          => 'email',
+		'type'        => 'text_email',
+	) );
+	$team_info_group->add_group_field( $team_info_group_field_id, array(
+	    'name'             => esc_html__( 'Location', 'seventeen-ldn-ny' ),
+	    'description'      => esc_html__( 'Select a Location', 'seventeen-ldn-ny' ),
+	    'id'               => 'location_select',
+	    'type'             => 'select',
+	    'show_option_none' => true,
+	    'default'          => 'none',
+	    'options'          => array(
+	        'London'   => __( 'London', 'seventeen-ldn-ny' ),
+	        'New York' => __( 'New York', 'seventeen-ldn-ny' ),
+	        'Both'     => __( 'Both', 'seventeen-ldn-ny' ),
+	    ),
 	) );
 }
 

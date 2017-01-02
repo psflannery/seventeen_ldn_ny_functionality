@@ -42,6 +42,7 @@ include_once( SEVENTEEN_DIR . '/inc/cmb2-metaboxes.php' );
 include_once( SEVENTEEN_DIR . '/inc/cmb2-template-tags.php' );
 include_once( SEVENTEEN_DIR . '/inc/cmb2-fieldtypes.php' );
 include_once( SEVENTEEN_DIR . '/inc/cmb2-attached-posts-field.php' );
+include_once( SEVENTEEN_DIR . '/inc/cmb2-required-fields-validation.php' );
 include_once( SEVENTEEN_DIR . '/inc/cmb2-shortcode-button.php' );
 include_once( SEVENTEEN_DIR . '/inc/cmb2-shortcode-button-config.php' );
 include_once( SEVENTEEN_DIR . '/inc/contact-widget.php' );
