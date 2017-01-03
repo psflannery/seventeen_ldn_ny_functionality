@@ -72,7 +72,7 @@ class SEVENTEEN_Mailing_List_Widget extends WP_Widget {
                     }
                 ?>
                 <div class="row">
-                    <div class="col-sm-6">
+                    <div class="col-sm-12">
                         <div class="control-group">
                             <!--<label class="control-label" for="email_address" ><?php //esc_html_e( 'Email Address:', 'seventeen-ldn-ny' ); ?></label>-->
                             <div class="controls">
@@ -92,8 +92,8 @@ class SEVENTEEN_Mailing_List_Widget extends WP_Widget {
                             </div>
                         </div>
                     </div>
-                    <div class="controls col-sm-6">
-                        <input type="submit" value="Join Now" tabindex="4">
+                    <div class="controls col-sm-12">
+                        <input type="submit" value="Join Now" tabindex="4" class="btn-link link-text-color btn-right btn-form">
                     </div>
                 </div>
             </fieldset>
