@@ -369,7 +369,7 @@ function seventeen_ldn_ny_do_team_info( $location, $before = '', $after = '' ) {
 
     $output = '';
 
-    $output .= '<ul class="list-unstyled">';
+    $output .= '<dl class="dl-horizontal">';
     foreach ( (array) $team as $key => $person) {
 
         $name = $title = $phone = $email = $city = '';
@@ -396,13 +396,11 @@ function seventeen_ldn_ny_do_team_info( $location, $before = '', $after = '' ) {
 
         if ( ucwords( $location ) === $city ) {
 
-            $output .='<li>';
-            $output .= sprintf( '<span class="info-item">%s</span><span class="info-item">%s</span>', $name, $title );
-            $output .= '</li>';
+            $output .= sprintf( '<dt>%s</dt><dd>%s</dd>', $name, $title );
 
         }
     }
-    $output .= '</ul>';
+    $output .= '</dl>';
 
     echo $before . $output. $after;
 }
@@ -457,7 +455,12 @@ function seventeen_ldn_ny_get_wysiwyg_output( $meta_key, $post_id = 0 ) {
     if ( 'exhibitions' === get_post_type() ) {
         // Images without captions
         $img_pattern = '/<p>\\s*?(<a rel=\"attachment.*?><img([^>]+?)src=[\'"]?([^\'"\s>]+)[\'"]?([^>]*)><\\/a>|<img([^>]+?)src=[\'"]?([^\'"\s>]+)[\'"]?([^>]*)>)?\\s*<\\/p>/s';
-        $img_replacement = sprintf( '<div class="col-sm-6 col-md-4 masonry-item entry-content-image"><img${5}src="${6}"${7}></div>' );
+
+        if ( ! is_front_page() ) {
+            $img_replacement = sprintf( '<div class="col-sm-6 col-md-4 masonry-item entry-content-image"><img${5}src="${6}"${7}></div>' );
+        } else {
+            $img_replacement = sprintf( '<div class="col-sm-12 masonry-item entry-content-image"><img${5}src="${6}"${7}></div>' );
+        }
 
         // Images with captions
         $caption_pattern = '/(<figure[^>]+? class=)[\'"]?([^\'">]+)[\'"]?(.*?<img[^>]+? src=)[\'"]?([^\'"\s>]+)[\'"]?(.*?<\/figure>)/si';
