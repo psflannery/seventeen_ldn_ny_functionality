@@ -133,7 +133,7 @@ function seventeen_ldn_ny_register_offsite_location() {
 
 	$offsite_location = new_cmb2_box( array(
 		'id'           => $prefix . 'offsite_location',
-		'title'        => __( 'Offsite Location', 'seventeen-ldn-ny' ),
+		'title'        => __( 'Offsite Project', 'seventeen-ldn-ny' ),
 		'object_types' => array( 'exhibitions', ),
 		'context'      => 'normal',
 		'priority'     => 'high',
