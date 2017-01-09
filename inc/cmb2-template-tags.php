@@ -72,9 +72,9 @@ function seventeen_ldn_ny_event_dates() {
     endif;
 
     if ( 'post' === get_post_type() ) :
-        $event_date = get_post_meta($post->ID, '_seventeen_event_date', true);
-        $event_start_time = get_post_meta($post->ID, '_seventeen_event_start_time', true);
-        $event_end_time = get_post_meta($post->ID, '_seventeen_event_end_time', true);
+        $event_date = get_post_meta( get_the_ID(), '_seventeen_event_date', true );
+        $event_start_time = get_post_meta( get_the_ID(), '_seventeen_event_start_time', true );
+        $event_end_time = get_post_meta( get_the_ID(), '_seventeen_event_end_time', true );
 
         if ( '' != $event_date ):
             $clean_event_date = date("l jS F", $event_date);
