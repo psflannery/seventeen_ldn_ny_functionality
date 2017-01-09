@@ -56,18 +56,19 @@ function seventeen_ldn_ny_do_exhibition_dates( $before = '', $after = '', $echo 
  * @since Seventeen 1.0.0
  */
 function seventeen_ldn_ny_event_dates() {
-	global $post;
     if ( 'exhibitions' === get_post_type() ) :
-    	$event_date = get_post_meta($post->ID, '_seventeen_private_view', true);
+    	$event_date = get_post_meta( get_the_ID(), '_seventeen_private_view', true );
 
-    	if ( '' != $event_date ):
-            if ( $event_date <= time() && !is_single() )
+        if ( '' != $event_date ):
+            foreach ( $event_date as $date ) {
+                if ( $date <= time() && !is_single() )
                 return;
 
-    		$clean_event_date = date("l jS F, ga", $event_date);
+                $clean_event_date = date("l jS F, ga", $date);
 
-    		return esc_html( $clean_event_date );
-    	endif;
+                return esc_html( $clean_event_date );
+            }
+        endif;
     endif;
 
     if ( 'post' === get_post_type() ) :

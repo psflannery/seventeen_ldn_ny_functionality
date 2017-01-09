@@ -73,11 +73,15 @@ function seventeen_ldn_ny_register_exhibition_dates() {
 
 	$exhibition_dates->add_field( array(
 		'name'        => __( 'Private View', 'seventeen-ldn-ny' ),
-		'desc'        => __( 'The date and time of the private view', 'seventeen-ldn-ny' ),
+		'desc'        => __( 'The date and time of the private view(s)', 'seventeen-ldn-ny' ),
 		'id'          => $prefix . 'private_view',
 		'type'        => 'text_datetime_timestamp',
 		//'timezone_meta_key' => '_seventeen_exhibition_timezone',
-		'date_format' => __( 'd-m-Y', 'seventeen-ldn-ny' ), 
+		'date_format' => __( 'd-m-Y', 'seventeen-ldn-ny' ),
+		'options' => array(
+        	'add_row_text' => __( 'Add Another PV', 'seventeen-ldn-ny' ),
+    	),
+		'repeatable'  => true,
 	) );
 	
 	$exhibition_dates->add_field( array(
