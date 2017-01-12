@@ -425,6 +425,24 @@ function seventeen_ldn_ny_get_wysiwyg_output( $meta_key, $post_id = 0 ) {
     $content = do_shortcode( $content );
     $content = wpautop( $content );
 
+    //
+    $args = array(
+        'post_type'   => 'attachment',
+        'numberposts' => -1,
+        //'post_status' => 'any',
+        'post_parent' => get_the_ID(),
+        'order'       => 'ASC',
+        'exclude'     => get_post_thumbnail_id(),
+    );
+    $attachments = get_posts( $args );
+
+    $class = '';
+    foreach ( $attachments as $attachment ) {
+        $image = wp_get_attachment_image_src( $attachment->ID, 'full' );
+        $class = $image[2] > $image[1] ? 'portrait' : 'landscape';
+    }
+    //  
+
     /**
      * Adds markup to images and videos for display in the fullscreen flickity carousel on artist post-type.
      *
@@ -436,16 +454,16 @@ function seventeen_ldn_ny_get_wysiwyg_output( $meta_key, $post_id = 0 ) {
 
         // Images without captions
         $img_pattern = '/<p>\\s*?(<a rel=\"attachment.*?><img([^>]+?)src=[\'"]?([^\'"\s>]+)[\'"]?([^>]*)><\\/a>|<img([^>]+?)src=[\'"]?([^\'"\s>]+)[\'"]?([^>]*)>)?\\s*<\\/p>/s';
-        $img_replacement = sprintf( '<div class="flickity-carousel-cell flickity-carousel-lazy"><div class="maintain-aspect-wrap"><div class="maintain-aspect-media wp-captionless"><img${5}src="%s" data-flickity-lazyload="${6}"${7}></div></div></div>', $placeholder );
+        $img_replacement = sprintf( '<div class="flickity-carousel-cell flickity-carousel-lazy"><div class="maintain-aspect-wrap"><div class="maintain-aspect-media image-ratio wp-captionless"><img${5}src="%s" data-flickity-lazyload="${6}"${7}></div></div></div>', $placeholder );
 
         // Iframes
         $iframe_pattern = '/(<div[^>]*>?\s*<figure class=)[\'"]?([^\'"\s>]+)[\'"]?(.*?<\/div>)/s';
-        $iframe_replacement = '<div class="flickity-carousel-cell flickity-carousel-lazy">${1}"${2} flickity-video-screen"${3}</div>';
+        $iframe_replacement = '<div class="flickity-carousel-cell flickity-carousel-lazy">${1}"${2} flickity-video-screen image-ratio"${3}</div>';
 
         // Images with captions
         // May need to allow for images with links
         $caption_pattern = '/(<figure[^>]+? class=)[\'"]?([^\'">]+)[\'"]?(.*?<img[^>]+? src=)[\'"]?([^\'"\s>]+)[\'"]?(.*?<\/figure>)/si';
-        $caption_replacement = sprintf( '<div class="flickity-carousel-cell flickity-carousel-lazy"><div class="maintain-aspect-wrap">${1}"${2} maintain-aspect-media"src=${3}"%s" data-flickity-lazyload="${4}"${5}</div></div>', $placeholder );
+        $caption_replacement = sprintf( '<div class="flickity-carousel-cell flickity-carousel-lazy"><div class="maintain-aspect-wrap">${1}"${2} maintain-aspect-media image-ratio"src=${3}"%s" data-flickity-lazyload="${4}"${5}</div></div>', $placeholder );
 
         $patterns = array( $img_pattern, $caption_pattern, $iframe_pattern );
         $replacements = array( $img_replacement, $caption_replacement, $iframe_replacement );
@@ -458,7 +476,7 @@ function seventeen_ldn_ny_get_wysiwyg_output( $meta_key, $post_id = 0 ) {
         $img_pattern = '/<p>\\s*?(<a rel=\"attachment.*?><img([^>]+?)src=[\'"]?([^\'"\s>]+)[\'"]?([^>]*)><\\/a>|<img([^>]+?)src=[\'"]?([^\'"\s>]+)[\'"]?([^>]*)>)?\\s*<\\/p>/s';
 
         if ( ! is_front_page() ) {
-            $img_replacement = sprintf( '<div class="col-sm-6 col-md-4 masonry-item entry-content-image"><img${5}src="${6}"${7}></div>' );
+            $img_replacement = sprintf( '<div class="col-sm-6 col-md-4 masonry-item entry-content-image"><div class="image-ratio intrinsic-ratio"><img${5}src="${6}"${7}></div></div>' );
         } else {
             $img_replacement = sprintf( '<div class="col-sm-12 masonry-item entry-content-image"><img${5}src="${6}"${7}></div>' );
         }
@@ -467,7 +485,7 @@ function seventeen_ldn_ny_get_wysiwyg_output( $meta_key, $post_id = 0 ) {
         $caption_pattern = '/(<figure[^>]+? class=)[\'"]?([^\'">]+)[\'"]?(.*?<img[^>]+? src=)[\'"]?([^\'"\s>]+)[\'"]?(.*?<\/figure>)/si';
 
         if ( ! is_front_page() ) {
-            $caption_replacement = sprintf( '<div class="col-sm-6 col-md-4 masonry-item entry-content-image">${1}${2}${3}${4}${5}</div>' );
+            $caption_replacement = sprintf( '<div class="col-sm-6 col-md-4 masonry-item entry-content-image"><div class="image-ratio intrinsic-ratio">${1}${2}${3}${4}${5}</div></div>' );
         } else {
             $caption_replacement = sprintf( '<div class="col-sm-12 entry-content-image">${1}${2}${3}${4}${5}</div>' );
         }
