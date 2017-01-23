@@ -328,9 +328,10 @@ function seventeen_ldn_ny_do_artist_images( $before = '', $after = '' ) {
  * @since Seventeen 1.0.0
  */
 function seventeen_ldn_ny_do_exhibition_download() {
+    $downloads = get_post_meta( get_the_ID(), '_seventeen_exhibition_downloads', true );
     $files = get_post_meta( get_the_ID(), '_seventeen_exhibition_download', true );
 
-    if ( '' === $files )
+    if ( '' === $downloads )
         return;
 
     $output = '';
@@ -344,8 +345,8 @@ function seventeen_ldn_ny_do_exhibition_download() {
             $text = esc_html( $file['exhibition_download_text'] );
         }
 
-        if ( isset( $file['exhibition_download_file'] ) ) {
-            $link = esc_url( $file['exhibition_download_file'] );
+        if ( isset( $file['exhibition_download_file_id'] ) ) {
+            $link = esc_url( $file['exhibition_download_file_id'] );
         }
 
         $output .='<li>';
